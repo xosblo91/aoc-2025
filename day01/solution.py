@@ -6,69 +6,48 @@ def main():
 
 def sol1(instructions):
     dial = 50
-    zero_count = 0
+    total = 0
 
-    for direction, value in instructions:
-        if direction == "L":
-            dial, _ = left(dial, value)
-        else:
-            dial, _ = right(dial, value)
-
+    for direction, steps in instructions:
+        dial, _ = move(dial, steps, direction)
         if dial == 0:
-            zero_count += 1
+            total += 1
 
-    print(dial)
-    print(zero_count)
+    print(total)
 
 
 def sol2(instructions):
     dial = 50
+    total = 0
+
+    for direction, steps in instructions:
+        dial, z = move(dial, steps, direction)
+        total += z
+
+    print(total)
+
+
+def move(start, steps, direction):
+    out = start
     zero_count = 0
 
-    for direction, value in instructions:
-        if direction == "L":
-            dial, z = left(dial, value)
-            zero_count += z
-        else:
-            dial, z = right(dial, value)
-            zero_count += z
+    step = 1 if direction == "R" else -1
 
-    print(dial)
-    print(zero_count)
-
-
-def right(start, count):
-    out = start
-    zeroCount = 0
-
-    for _ in range(count):
-        out += 1
+    for _ in range(steps):
+        out += step
         if out == 100:
             out = 0
-        if out == 0:
-            zeroCount += 1
-
-    return out, zeroCount
-
-
-def left(start, count):
-    out = start
-    zeroCount = 0
-
-    for _ in range(count):
-        out -= 1
-        if out == -1:
+        elif out == -1:
             out = 99
         if out == 0:
-            zeroCount += 1
+            zero_count += 1
 
-    return out, zeroCount
+    return out, zero_count
 
 
 def read():
     with open("input.txt", "r") as file:
         instructions = [line.strip() for line in file if line.strip()]
-
     return [(line[0], int(line[1:])) for line in instructions]
 
 
