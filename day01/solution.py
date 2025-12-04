@@ -21,8 +21,8 @@ def sol2(instructions):
     total = 0
 
     for direction, steps in instructions:
-        dial, z = move(dial, steps, direction)
-        total += z
+        dial, zero_count = move(dial, steps, direction)
+        total += zero_count
 
     print(total)
 
