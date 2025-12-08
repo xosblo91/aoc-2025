@@ -1,42 +1,44 @@
 def main():
     ranges, numbers = read()
     sol1(ranges, numbers)
-    sol2(ranges, numbers)
+    sol2(ranges)
 
 
 def sol1(ranges, numbers):
-    good = 0
+    fresh = 0
     for i in numbers:
         for lower, upper in ranges:
-            if i >= lower and i <= upper:
-                #print(str(i) + " " + str(lower) + " " + str(upper))
-                good += 1
+            if lower <= i <= upper:
+                fresh += 1
                 break
 
-    print(good)
+    print(fresh)
 
-# python ba dör
-def sol2(ranges, numbers):
-    # dic={}
-    # good = 0
-    # for lower, upper in ranges:
-    #     for i in range(lower,upper+1):
-    #         if i not in dic:
-    #             dic[i]=i
-    #             good +=1   
 
-    # good = set()
-    # for lower, upper in ranges:
-    #     good.update(range(lower,upper+1))
+def sol2(ranges):
+    ranges.sort()
 
-    # print(len(good))
+    merged = []
+    lower, upper = ranges[0]
 
-    # good = {}
-    # for lower, upper in ranges:
-    #     for i in range(lower, upper + 1):
-    #         good[i] = True  # store each number as a key
+    index = 0
+    for current_lower, current_upper in ranges:
+        if index == 0:
+            index += 1
+            continue
+        if current_lower <= upper + 1:
+            upper = max(upper, current_upper)
+        else:
+            merged.append((lower, upper))
+            lower, upper = current_lower, current_upper
 
-    print(len(good))
+    merged.append((lower, upper))
+
+    fresh = 0
+    for current_lower, current_upper in merged:
+        fresh += current_upper - current_lower + 1
+
+    print(fresh)
 
 
 def read():
